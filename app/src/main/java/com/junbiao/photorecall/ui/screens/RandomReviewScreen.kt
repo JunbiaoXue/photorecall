@@ -247,7 +247,7 @@ fun RandomReviewScreen(
                 ) {
                     // Progress
                     LinearProgressIndicator(
-                        progress = { (viewModel.currentPhotoIndex + 1).toFloat() / viewModel.reviewPhotos.size },
+                        progress = (viewModel.currentPhotoIndex + 1).toFloat() / viewModel.reviewPhotos.size,
                         modifier = Modifier.fillMaxWidth()
                     )
                     

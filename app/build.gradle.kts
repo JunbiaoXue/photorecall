@@ -63,8 +63,8 @@ dependencies {
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.5.0")
     
-    // Accompanist for permissions
-    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+    // Material Icons Extended
+    implementation("androidx.compose.material:material-icons-extended")
     
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
