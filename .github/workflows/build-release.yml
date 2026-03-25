@@ -19,8 +19,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     
-    - name: Setup Gradle
+    - name: Setup Gradle 8.5
       uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: '8.5'
     
     - name: Build Release APK
       run: gradle assembleRelease --no-daemon
@@ -43,19 +45,15 @@ jobs:
           
           ### 功能 / Features
           - 📸 随机展示相册图片 / Random photo display
-          - 🗑️ 滑动决策：左滑删除，右滑保留 / Swipe to decide: left to delete, right to keep
+          - 🗑️ 滑动决策：左滑删除，右滑保留 / Swipe to decide
           - 🔍 大图查看 / Full screen photo view
-          - 📅 时光穿越：查看X年前的今天 / Time travel: view photos from X years ago
+          - 📅 时光穿越：查看X年前的今天 / Time travel
           - 📍 显示照片时间和定位 / Show photo date and location
           
           ### 安装方法 / Installation
           1. 下载APK文件 / Download the APK file
           2. 开启"允许安装未知来源应用" / Enable "Install from unknown sources"
           3. 点击APK安装 / Tap the APK to install
-          
-          ### 权限说明 / Permissions
-          - 相册访问权限（读取和显示照片）
-          - Photo gallery access (to read and display photos)
         files: |
           app/build/outputs/apk/release/app-release.apk
         draft: false
