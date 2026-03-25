@@ -29,12 +29,14 @@ jobs:
     
     - name: List build outputs
       run: find app/build/outputs -name "*.apk" -type f
+      continue-on-error: true
     
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
         name: photorecall-apk
         path: app/build/outputs/apk/release/
+        retention-days: 5
     
     - name: Get version info
       id: version
@@ -45,13 +47,19 @@ jobs:
     
     - name: Download APK
       uses: actions/download-artifact@v4
+      if: success()
       with:
         name: photorecall-apk
         path: ./apk/
     
+    - name: List downloaded files
+      run: ls -la ./apk/ && find ./apk/ -name "*.apk"
+      if: success()
+    
     - name: Create Release
       id: create_release
       uses: softprops/action-gh-release@v1
+      if: success()
       with:
         tag_name: v${{ steps.version.outputs.version }}-${{ steps.version.outputs.date }}
         name: Release v${{ steps.version.outputs.version }}
@@ -66,11 +74,10 @@ jobs:
           - 📍 显示照片时间和定位 / Show photo date and location
           
           ### 安装方法 / Installation
-          1. 下载APK文件 / Download the APK file
-          2. 开启"允许安装未知来源应用" / Enable "Install from unknown sources"
+          1. 下载下方APK文件 / Download the APK file below
+          2. 开启"允许安装未知来源应用" / Enable "Install from unknown sources"  
           3. 点击APK安装 / Tap the APK to install
-        files: |
-          ./apk/**/*.apk
+        files: ./apk/*.apk
         draft: false
         prerelease: false
       env:
