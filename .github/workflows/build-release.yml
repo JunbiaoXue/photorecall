@@ -27,12 +27,27 @@ jobs:
     - name: Build Release APK
       run: gradle assembleRelease --no-daemon
     
+    - name: List build outputs
+      run: find app/build/outputs -name "*.apk" -type f
+    
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: photorecall-apk
+        path: app/build/outputs/apk/release/
+    
     - name: Get version info
       id: version
       run: |
         VERSION=$(cat app/build.gradle.kts | grep "versionName" | sed 's/.*versionName.*=.*"\([^"]*\)".*/\1/' || echo "1.0.0")
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+    
+    - name: Download APK
+      uses: actions/download-artifact@v4
+      with:
+        name: photorecall-apk
+        path: ./apk/
     
     - name: Create Release
       id: create_release
@@ -55,14 +70,8 @@ jobs:
           2. 开启"允许安装未知来源应用" / Enable "Install from unknown sources"
           3. 点击APK安装 / Tap the APK to install
         files: |
-          app/build/outputs/apk/release/app-release.apk
+          ./apk/**/*.apk
         draft: false
         prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Upload APK artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: photorecall-release-apk
-        path: app/build/outputs/apk/release/app-release.apk
